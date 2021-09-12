@@ -49,18 +49,11 @@ public class AddSwimReport implements AddSwimReportPort {
      * Helper method for setting up return model container
      */
     private RequiredModel createModelContainer(Angler angler, Booking booking, SwimReport swimReport) {
-        List<Angler> anglers = new ArrayList<>();
-        List<Booking> bookings = new ArrayList<>();
-        List<SwimReport> swimReports = new ArrayList<>();
-
-        anglers.add(angler);
-        bookings.add(booking);
-        swimReports.add(swimReport);
 
         RequiredModel returnModel = this.commitDomainModel.requestEmptyRequiredModel();
-        returnModel.setAnglers(anglers);
-        returnModel.setBookings(bookings);
-        returnModel.setSwimReports(swimReports);
+        returnModel.setAnglers(angler);
+        returnModel.setBookings(booking);
+        returnModel.setSwimReports(swimReport);
 
         return returnModel;
 

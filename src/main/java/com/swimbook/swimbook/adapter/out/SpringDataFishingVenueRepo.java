@@ -10,4 +10,6 @@ import java.util.*;
 public interface SpringDataFishingVenueRepo extends CrudRepository<FishingVenue, Long> {
 
     public List<FishingVenue> findFishingVenueByVenueName(String name);
+
+    List<FishingVenue> findAll();
 }

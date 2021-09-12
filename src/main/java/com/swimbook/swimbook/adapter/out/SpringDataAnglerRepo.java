@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface SpringDataAnglerRepo extends CrudRepository<Angler, Integer> {
 
     Angler findAnglerByMembershipID(int membershipID);
+
+
 }

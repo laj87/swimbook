@@ -4,6 +4,7 @@ import com.swimbook.swimbook.application.port.in.CreateFishingVenuePort;
 import com.swimbook.swimbook.adapter.in.RequiredModel;
 import com.swimbook.swimbook.application.port.out.CommitDomainModel;
 import com.swimbook.swimbook.domain.FishingVenue;
+import com.swimbook.swimbook.domain.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,19 +27,25 @@ public class CreateFishingVenue implements CreateFishingVenuePort {
         List<FishingVenue> venues = requiredModel.getFishingVenues();
 
         //Check for name uniqueness
-        for(FishingVenue venue : venues) {
-            if (venue.getVenueName().equals(name)) {
-                throw new IllegalArgumentException("That venue name is not unique");
+        if(!venues.isEmpty()) {
+            for (FishingVenue venue : venues) {
+                if (venue.getVenueName().equals(name)) {
+                    throw new IllegalArgumentException("That venue name is not unique");
+                }
             }
         }
 
         //Set up new model container
-        RequiredModel returnModel = this.commitDomainModel.requestEmptyRequiredModel();
-        ArrayList<FishingVenue> newVenue = new ArrayList<>();
-        newVenue.add(new FishingVenue(name, type, rules));
-        returnModel.setFishingVenues(newVenue);
+        //RequiredModel returnModel = this.commitDomainModel.requestEmptyRequiredModel();
 
-        this.commitDomainModel.commitDomainModel(returnModel);
+        FishingVenue newVenue = new FishingVenue(name, type, rules);
+        Status newStatus = newVenue.getStatus();
+
+        requiredModel.empty();
+        requiredModel.setFishingVenues(newVenue);
+        requiredModel.setStatuses(newStatus);
+
+        this.commitDomainModel.commitDomainModel(requiredModel);
 
         return Boolean.TRUE;
 

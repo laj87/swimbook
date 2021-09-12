@@ -18,7 +18,7 @@ public final class Swim {
 
     @Id
     @GeneratedValue
-    private Long swimID;
+    private Integer swimID;
     private String type;
     private int capacity;
     private String swimInfo;
@@ -53,7 +53,7 @@ public final class Swim {
         this.swimInfo = swimInfo;
         this.swimStatus = new Status();
         this.bookings = new ArrayList<Booking>();
-        venue.setSwims(this);
+        venue.addSwim(this);
     }
 
     /**
@@ -62,7 +62,7 @@ public final class Swim {
      * @param type
      * @param capacity
      */
-    public Swim(long swimID, String type, int capacity) {
+    public Swim(Integer swimID, String type, int capacity) {
         this.swimID = swimID;
         this.type = type;
         this.capacity = capacity;
@@ -70,11 +70,11 @@ public final class Swim {
         this.bookings = new ArrayList<Booking>();
     }
 
-    public float getSwimID() {
+    public Integer getSwimID() {
         return swimID;
     }
 
-    public void setSwimID(long swimID) {
+    public void setSwimID(Integer swimID) {
         this.swimID = swimID;
     }
 

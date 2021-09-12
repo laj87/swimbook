@@ -2,6 +2,7 @@ package com.swimbook.swimbook.domain;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,8 +24,8 @@ public final class FishingVenue {
     @Column
     private String venueSpecificRules;
 
-    @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER) //ensures all the associated swim instances are received
-    @JoinColumn(name = "status_id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) //ensures all the associated swim instances are received
+    @JoinColumn(name = "status_id", referencedColumnName = "statusID")
     private Status status;
 
     @OneToMany(fetch = FetchType.EAGER)
@@ -43,6 +44,7 @@ public final class FishingVenue {
         this.venueSpecificRules = rules;
         this.status = new Status();
         this.swims = new ArrayList<>();
+        this.news = new HashSet<>();
     }
 
     /**
@@ -90,11 +92,23 @@ public final class FishingVenue {
         this.id = id;
     }
 
-    public void setSwims(Swim aSwim) {
+    public void addSwim(Swim aSwim) {
         this.swims.add(aSwim);
+    }
+
+    public void setSwims(List<Swim> theSwims) {
+        this.swims = theSwims;
     }
 
     public List<Swim> getSwims(){
         return this.swims;
+    }
+
+    public boolean isVenueOpen() {
+        return this.getStatus().getStatus();
+    }
+
+    public void addNews(News news) {
+        this.news.add(news);
     }
 }

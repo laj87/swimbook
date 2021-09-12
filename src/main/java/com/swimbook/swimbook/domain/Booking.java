@@ -8,9 +8,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  *
@@ -33,7 +31,7 @@ public final class Booking {
 
 
     @OneToMany
-    private Set<SwimReport> reports;
+    private List<SwimReport> reports;
 
 
     /**
@@ -46,11 +44,12 @@ public final class Booking {
         this.swim = swim;
         this.bookingSubject = bookingSubject;
         this.bookingDuration = bookingDuration;
-        this.reports = new HashSet<SwimReport>();
+        this.reports = new ArrayList<SwimReport>();
+        swim.addBooking(this);
+
     }
 
     public Booking() {
-        this.reports = new HashSet<>();
     }
 
     /**
@@ -64,13 +63,14 @@ public final class Booking {
             throws IllegalArgumentException {
         this.swim = swim;
         this.bookingSubject = bookingSubject;
-        this.reports = new HashSet<SwimReport>();
+        this.reports = new ArrayList<SwimReport>();
 
         if((start.isAfterNow()) & (start.isBefore(end))) {
             this.bookingDuration = new Interval(start, end);
         } else {
             throw new IllegalArgumentException("Bookings can only be made for future dates");
         }
+        swim.addBooking(this);
     }
 
     public Collection<SwimReport> getReports() {
